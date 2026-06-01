@@ -128,14 +128,6 @@ if __name__ == "__main__":
         .agg(F.count("*").alias("rental_count")) \
         .orderBy("distance_group")
 
-    # 결과 미리보기
-    monthly_usage.show(20, truncate=False)
-    hourly_usage.show(24, truncate=False)
-    station_top10.show(10, truncate=False)
-    usage_summary.show(truncate=False)
-    duration_distribution.show(truncate=False)
-    distance_distribution.show(truncate=False)
-
     # 결과 저장
     save_result(monthly_usage, f"{OUTPUT_BASE}/monthly_usage")
     save_result(hourly_usage, f"{OUTPUT_BASE}/hourly_usage")
@@ -143,6 +135,11 @@ if __name__ == "__main__":
     save_result(usage_summary, f"{OUTPUT_BASE}/usage_summary")
     save_result(duration_distribution, f"{OUTPUT_BASE}/duration_distribution")
     save_result(distance_distribution, f"{OUTPUT_BASE}/distance_distribution")
+
+    # 저장 후 간단히 확인
+    monthly_usage.show(20, truncate=False)
+    duration_distribution.show(truncate=False)
+    distance_distribution.show(truncate=False)
 
     print("analysis_done")
 
