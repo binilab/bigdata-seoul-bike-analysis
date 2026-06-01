@@ -1,23 +1,28 @@
-#!/usr/bin/evn bash 
+#!/usr/bin/env bash
 
-set -e 
+set -e
 
-LOCAL_FILE="/home/maria_dev/seoul_bike/raw/seoul_bike_2017.csv"
-HDFS_DIR="/user/maria_dev/seoul_bike/raw"
-HDFS_FILE="${HDFS_DIR}/seoul_bike_2017.csv"
+LOCAL_RAW_DIR="/home/maria_dev/seoul_bike/raw"
+HDFS_RAW_DIR="/user/maria_dev/seoul_bike/raw"
 
-echo "로컬 원본 파일:"
-echo "${LOCAL_FILE}"
-echo "HDFS 저장 경로:"
-echo "${HDFS_FILE}"
-ls -lh "${LOCAL_FILE}"
+echo "HDFS raw 적재 시작"
+echo "로컬 raw 경로: ${LOCAL_RAW_DIR}"
+echo "HDFS raw 경로: ${HDFS_RAW_DIR}"
 
-hdfs dfs -mkdir -p "${HDFS_DIR}"
-hdfs dfs -rm -f "${HDFS_FILE}"
-hdfs dfs -put "${LOCAL_FILE}" "${HDFS_FILE}"
+echo "업로드 대상:"
+ls -lh "${LOCAL_RAW_DIR}"/seoul_bike_2017_*.csv
 
-echo "HDFS 파일 목록:"
-hdfs dfs -ls -h "${HDFS_DIR}"
+hdfs dfs -rm -r -f "${HDFS_RAW_DIR}"
+hdfs dfs -mkdir -p "${HDFS_RAW_DIR}"
 
-echo "HDFS 파일 앞부분:"
-hdfs dfs -cat "${HDFS_FILE}" | head -n 3
+for raw_file in "${LOCAL_RAW_DIR}"/seoul_bike_2017_*.csv; do
+    file_name=$(basename "${raw_file}")
+
+    echo "업로드 파일: ${file_name}"
+    hdfs dfs -put "${raw_file}" "${HDFS_RAW_DIR}/"
+done
+
+echo "HDFS raw 적재 결과:"
+hdfs dfs -ls -h "${HDFS_RAW_DIR}"
+
+echo "HDFS raw 적재 완료"

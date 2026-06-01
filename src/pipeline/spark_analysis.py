@@ -5,8 +5,8 @@ from pyspark.sql import functions as F
 
 
 
-INPUT_PATH = "hdfs:///user/maria_dev/seoul_bike/processed/seoul_bike_2017_utf8.csv"
-# HDFS에 저장된 UTF-8 따릉이 CSV 경로
+INPUT_PATH = "hdfs:///user/maria_dev/seoul_bike/processed/seoul_bike_2017_*_utf8.csv"
+# HDFS에 저장된 2017년 월별 UTF-8 따릉이 CSV 경로
 
 OUTPUT_BASE = "hdfs:///user/maria_dev/seoul_bike/results/csv"
 # 분석 결과 CSV를 저장할 HDFS 기본 경로
