@@ -4,7 +4,7 @@ import csv
 
 RAW_DIR = Path("data/raw/extracted")
 SAMPLE_PATH = Path("data/sample/seoul_bike_sample.csv")
-SAMPLE_ROWS = 1000
+SAMPLE_ROWS = 999
 ENCODINGS = ["utf-8-sig", "utf-8", "cp949", "euc-kr"]
 
 

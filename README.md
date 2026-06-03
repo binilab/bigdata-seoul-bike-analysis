@@ -60,7 +60,6 @@
 | 저장 | HDFS | raw, processed, result 데이터 저장 |
 | 데이터 관리 | Hive | HDFS CSV에 테이블 구조 부여 |
 | 분석 | Spark DataFrame | 월별, 시간대별, 대여소별, 분포 집계 |
-| 보조 처리 | Pig | Hadoop 기반 보조 집계 |
 | 시각화 | Python, Pandas, Matplotlib | Spark 결과 CSV 시각화 |
 | 버전 관리 | Git, GitHub | 코드 및 결과 관리 |
 
@@ -70,7 +69,7 @@
 - `data/README.md`: 데이터 출처와 관리 방식 설명
 - `data/sample/`: 샘플 데이터
 - `src/ingest/`: 데이터 적재 관련 스크립트
-- `src/pipeline/`: Hive, Spark, Pig 처리 코드
+- `src/pipeline/`: Hive, Spark 처리 코드
 - `src/analyze/`: EDA 노트북과 시각화 코드
 - `results/csv/`: Spark 분석 결과 CSV
 - `results/figures/`: 시각화 결과 이미지
@@ -218,14 +217,13 @@ Spark 결과 CSV를 Mac 로컬의 `results/csv/`로 복사한 뒤 실행한다.
 ## 10. AI Tool Usage
 
 - ChatGPT: HDP Sandbox 실행 과정에서 발생한 인코딩/권한 오류 디버깅 보조
-- ChatGPT: Spark 집계 흐름 점검 및 시각화 구성 아이디어 참고
+- ChatGPT: Spark 집계 흐름 점검, 시각화 구성 아이디어, 제출 전 문서 정합성 점검 보조
 - 최종 코드와 결과 해석은 프로젝트 데이터와 실행 결과를 기준으로 직접 확인함
 
 ## 11. References
 
-- 서울 열린데이터광장, 서울특별시 공공자전거 대여이력 정보
+- 서울 열린데이터광장, 서울특별시 공공자전거 대여이력 정보: https://data.seoul.go.kr/dataList/datasetView.do?infId=OA-15182&serviceKind=1&srvType=A
 - Apache Hadoop Documentation
 - Apache Hive Documentation
 - Apache Spark Documentation
-- Apache Pig Documentation
 - Matplotlib Documentation
