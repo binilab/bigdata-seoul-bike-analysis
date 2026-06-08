@@ -1,12 +1,28 @@
 # -*- coding: utf-8 -*-
 
+import os
+
+from pyspark import StorageLevel
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 
 
 # HDFS 입력/출력 경로
-INPUT_PATH = "hdfs:///user/maria_dev/seoul_bike/processed/seoul_bike_2017_*_utf8.csv"
-OUTPUT_BASE = "hdfs:///user/maria_dev/seoul_bike/results/csv"
+YEAR = os.environ.get("YEAR", "2017")
+
+if YEAR == "2017":
+    DEFAULT_HDFS_BASE = "hdfs:///user/maria_dev/seoul_bike"
+else:
+    DEFAULT_HDFS_BASE = f"hdfs:///user/maria_dev/seoul_bike_{YEAR}"
+
+INPUT_PATH = os.environ.get(
+    "INPUT_PATH",
+    f"{DEFAULT_HDFS_BASE}/processed/seoul_bike_{YEAR}_*_utf8.csv",
+)
+OUTPUT_BASE = os.environ.get(
+    "OUTPUT_BASE",
+    f"{DEFAULT_HDFS_BASE}/results/csv",
+)
 
 
 def save_result(df, output_path):
@@ -25,8 +41,20 @@ if __name__ == "__main__":
         .getOrCreate()
 
     spark.sparkContext.setLogLevel("WARN")
+    spark.conf.set(
+        "spark.sql.shuffle.partitions",
+        os.environ.get("SPARK_SQL_SHUFFLE_PARTITIONS", "48"),
+    )
 
     print("analysis_start")
+    print("analysis_year")
+    print(YEAR)
+    print("input_path")
+    print(INPUT_PATH)
+    print("output_base")
+    print(OUTPUT_BASE)
+    print("shuffle_partitions")
+    print(spark.conf.get("spark.sql.shuffle.partitions"))
 
     # CSV 로드
     raw_df = spark.read \
@@ -57,6 +85,14 @@ if __name__ == "__main__":
         "bike_type",
     ]
 
+    if len(raw_df.columns) != len(columns):
+        raise ValueError(
+            "unexpected_column_count: expected={}, actual={}".format(
+                len(columns),
+                len(raw_df.columns),
+            )
+        )
+
     df = raw_df.toDF(*columns)
 
     # 분석에 필요한 날짜/숫자 컬럼 변환
@@ -70,6 +106,9 @@ if __name__ == "__main__":
         .filter(F.col("use_distance_m_num").isNotNull()) \
         .filter(F.col("use_min_num") >= 0) \
         .filter(F.col("use_distance_m_num") >= 0)
+
+    # 2025년 전체 데이터처럼 큰 입력에서는 여러 집계가 같은 정제 결과를 반복해서 읽지 않도록 저장한다.
+    clean_df = clean_df.persist(StorageLevel.MEMORY_AND_DISK)
 
     print("clean_row_count")
     print(clean_df.count())
@@ -129,11 +168,17 @@ if __name__ == "__main__":
         .orderBy("distance_group")
 
     # 결과 저장
+    print("save_monthly_usage")
     save_result(monthly_usage, f"{OUTPUT_BASE}/monthly_usage")
+    print("save_hourly_usage")
     save_result(hourly_usage, f"{OUTPUT_BASE}/hourly_usage")
+    print("save_station_top10")
     save_result(station_top10, f"{OUTPUT_BASE}/station_top10")
+    print("save_usage_summary")
     save_result(usage_summary, f"{OUTPUT_BASE}/usage_summary")
+    print("save_duration_distribution")
     save_result(duration_distribution, f"{OUTPUT_BASE}/duration_distribution")
+    print("save_distance_distribution")
     save_result(distance_distribution, f"{OUTPUT_BASE}/distance_distribution")
 
     # 저장 후 간단히 확인
@@ -142,5 +187,7 @@ if __name__ == "__main__":
     distance_distribution.show(truncate=False)
 
     print("analysis_done")
+
+    clean_df.unpersist()
 
     spark.stop()

@@ -17,10 +17,15 @@ __pycache__/
 
 .DS_Store
 
+# Hadoop local checksum files
+*.crc
+
+# Intermediate 2025 export folders
+results/csv/2025_monthly_parts/
+results/csv/2025_summary_text/
+
 # Logs and temporary files
 
 *.log
 
 tmp/
-
-
