@@ -136,6 +136,15 @@ Hive에서 확인한 주요 내용은 다음과 같다.
 - 샘플 데이터 조회
 - 전체 행 수 확인
 
+추가로 Hive External Table(`rental_2025_raw`)에 대해 HiveQL `GROUP BY` 집계를 직접 수행하여 월별 대여 건수를 산출하였다(12 rows, 약 452초, Tez 엔진). 그 결과는 Spark DataFrame으로 집계한 월별 이용량과 동일하게 나타나, 동일 데이터에 대한 Hive와 Spark 처리의 일관성을 교차검증하였다. 한편 최종 대량 집계는 Spark가 HDFS processed CSV를 직접 읽도록 구성하였는데, 이는 HDP Sandbox의 Ranger 권한 정책상 Spark 실행 계정(maria_dev)의 Hive 메타스토어 접근이 제한되었기 때문이다. 따라서 Hive는 스키마 정의와 집계 교차검증 용도로, Spark는 최종 대량 집계 용도로 역할을 분담하였다.
+
+```sql
+SELECT substr(rent_datetime, 1, 7) AS month, COUNT(*) AS cnt
+FROM rental_2025_raw
+GROUP BY substr(rent_datetime, 1, 7)
+ORDER BY month;
+```
+
 ### 4.3 Spark 분석
 
 Spark 분석은 `src/pipeline/spark_analysis.py`에서 수행하였다. 2017년 데이터는 전체 파이프라인 검증을 위해 12개월 데이터를 한 번에 읽어 집계하였다.
