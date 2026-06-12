@@ -18,6 +18,30 @@
 - 서울시 전동킥보드 견인 현황: https://data.seoul.go.kr/dataList/OA-21304/S/1/datasetView.do?tab=A
 - 서울시 전동킥보드 주차구역현황: https://data.seoul.go.kr/dataList/OA-21710/S/1/datasetView.do?tab=A
 
+## 1.1 데이터 스키마 (17개 컬럼)
+
+원본은 한글 컬럼명과 CP949 인코딩으로 제공되며, 분석 단계에서 아래 영문 컬럼명으로 매핑한다. 이 컬럼 구조는 Hive DDL(`src/pipeline/create_hive_table.sql`) 및 `src/pipeline/spark_analysis.py`와 동일하다.
+
+| # | 컬럼명 | 설명 |
+|---|---|---|
+| 1 | bike_no | 자전거 번호 |
+| 2 | rent_datetime | 대여일시 |
+| 3 | rent_station_no | 대여 대여소 번호 |
+| 4 | rent_station_name | 대여 대여소명 |
+| 5 | rent_rack_no | 대여 거치대 번호 |
+| 6 | return_datetime | 반납일시 |
+| 7 | return_station_no | 반납 대여소 번호 |
+| 8 | return_station_name | 반납 대여소명 |
+| 9 | return_rack_no | 반납 거치대 번호 |
+| 10 | use_min | 이용시간(분) |
+| 11 | use_distance_m | 이동거리(m) |
+| 12 | birth_year | 생년 |
+| 13 | gender | 성별 |
+| 14 | user_type | 이용자 구분 |
+| 15 | rent_station_id | 대여 대여소 ID |
+| 16 | return_station_id | 반납 대여소 ID |
+| 17 | bike_type | 자전거 종류 |
+
 ## 2. 데이터 관리 방식
 
 대용량 원본 데이터는 GitHub에 업로드하지 않는다.

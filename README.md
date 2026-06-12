@@ -269,6 +269,8 @@ HDP Sandbox에서는 2025년 파일을 `/home/maria_dev/seoul_bike_2025/raw/`에
 - `results/figures/2017_2025_monthly_usage_compare.png`
 - `results/figures/2017_2025_hourly_share_compare.png`
 - `results/figures/2025_avg_duration_by_month.png`
+- `results/figures/hive_groupby_query.png` (Hive=Spark 교차검증: GROUP BY 쿼리)
+- `results/figures/hive_groupby_result.png` (Hive=Spark 교차검증: 월별 결과 12 rows)
 
 ## 9. Limitations
 
@@ -295,5 +297,5 @@ HDP Sandbox에서는 2025년 파일을 `/home/maria_dev/seoul_bike_2025/raw/`에
 
 ## 11. AI 도구 사용 내역
 - ChatGPT: HDP Sandbox 실행 중 인코딩·권한 오류 디버깅, Spark 집계 흐름 점검 보조
-- Claude: 발표 슬라이드 디자인 및 결과 차트 정리, 보고서 형식 변환, 제출 전 코드·문서 정합성 점검 보조, README 형식 보안
+- Claude: 발표 슬라이드 디자인 및 결과 차트 정리, 보고서 형식 변환, 제출 전 코드·문서 정합성 점검 보조, README 형식 보완
 - 데이터 처리·분석 코드와 결과 해석은 프로젝트 실행 결과를 기준으로 직접 작성·검증하였다.
