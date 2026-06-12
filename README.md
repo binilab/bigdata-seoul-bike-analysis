@@ -62,7 +62,7 @@
 | 저장 | HDFS | raw, processed, result 데이터 저장 |
 | 데이터 관리 | Hive | HDFS CSV에 테이블 구조 부여 |
 | 분석 | Spark DataFrame | 월별, 시간대별, 대여소별, 분포 집계 |
-| 시각화 | Python, Pandas, Matplotlib | Spark 결과 CSV 시각화 |
+| 시각화 | Matplotlib (Pandas 보조) | Spark 결과 CSV 시각화 |
 | 버전 관리 | Git, GitHub | 코드 및 결과 관리 |
 
 ## 5. Repository Structure
